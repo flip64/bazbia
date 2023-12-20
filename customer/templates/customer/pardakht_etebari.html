@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% load humanize %}
+
+  {% block titel %}  پرداخت اقساطی   {% endblock %}
+
+  {% block metetitel%}  {% endblock %}
+  
+  {% block header %}
+      {% include "customer/header.html" %}
+  {% endblock%}  
+
+
+  {% block content %}   
+
+    <br>
+    {% if  etebrMember == 0   %} 
+      <p> شما اعتباری ندارید و باید فاکتور را به صورت نقدی پرداخت کنید  </p> 
+      <p> {{mablagh}}  تومان   </p> 
+      <form action ="{% url 'pardakht_naghdi' %}  " method = 'POST'>
+        {% csrf_token %}
+         <button name= 'mablagh' type = "submit" value = "{{kol}}" class="btn btn-block btn-primary my-3 py-3"> پرداخت نقدی    </button>
+      </form>
+      
+         
+    {% else %} 
+      {% if etebrMember == -1  %}
+        <p> شما بدهکار  هستید  و باید فاکتور را به صورت نقدی پرداخت کنید  </p> 
+        <p> در صورت پرداخت اعتباری باید بدهی خود را تسویه کنید   </p> 
+
+        <p> {{mablagh}}  تومان   </p> 
+        <form action ="{% url 'pardakht_naghdi' %}  " method = 'POST'>
+         {% csrf_token %}
+         <button name= 'mablagh' type = "submit" value = "{{mablaghPardakhti}}" class="btn btn-block btn-primary my-3 py-3"> پرداخت نقدی    </button>
+        </form>
+        {% else %}    
+        <p> <span> اعتبار شما  </span>  <span> {{etebrMember}}</span> </p>  
+        
+        <p> شما مبلغ  <span>{{etebrMember}}</span>  اعتبار دارید و میتوانید ان را استفاده کرده و مابقی  فاکتور را به صورت نقدی پرداخت کنید  </p> 
+        <div class="container">
+          <p class='text-center'>  جدول اقساط </p>
+
+          <table class="table">
+           <thead>
+             <tr>
+               <th scope="col"> شماره قسط</th>
+              <th scope="col">مبلغ</th>
+              <th scope="col">تاریخ سررسید</th>
+             </tr>
+           </thead>
+           <tbody>
+           {% for aghsat in listaghsat %}
+
+            <tr>
+              <th scope="row">{{aghsat.namber}}</th>
+              <td>{{aghsat.mablagh}}</td>
+              <td>{{aghsat.tarikhSarresid}}</td>
+             </tr>
+            {% endfor %}
+           </tbody>
+          </table>
+
+          <p> مبلغ پرداختی <span>{{mablaghPardakhti}}</span> </p> 
+          <form action ="" method = 'POST'>
+            <div class="form-check">
+              <input name='taid' class="form-check-input" type="checkbox" value="ok" id="flexCheckDefault" >
+              <label class="form-check-label" for="flexCheckDefault">
+                در صورت تایید انتخاب کنید 
+              </label>
+            </div>
+             {% csrf_token %}
+              <button name= 'mablagh' type = "submit" value = "{{mablaghPardakhti}}" class="btn btn-block btn-primary my-3 py-3"> پرداخت نقدی    </button>
+                      
+          </form>
+        
+  
+
+          
+        </div>
+      {% endif %}
+      
+    {% endif %}
+    <br>     
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  {% endblock %}
+
+  {% block footer %}
+   
+  {% endblock footer %}
+   
+
+

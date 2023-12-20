@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+ 
+
+{% block titel %}  لیست صفخات   {% endblock %}
+
+  
+{% block content %}   
+
+<h1> وامهای اقای</h1>
+    <h2>  {{name}} </h2>
+
+    <table class="table table-success table-striped" >   
+      <tr>
+          <th> نام صفحه</th>
+          <th>    نام انگلیسی    </th>
+          <th>      آدرس   </th>
+           <th>  توضیحات </th>
+           <th> طبقه بندی </th>
+           <th> اولویت </th>
+  
+        </tr>
+        <tr>
+         {% for l in list %}
+         <td><a href="{% url 'pageupdate' %}?id={{l.pk}}"> {{l.name}} </a> </td>
+          <td> {{l.pageENnam}}</td>
+          <td> {{l.url}} </td>
+          <td> {{l.dis}} </td>            
+          <td> {{l.PageCate}} </td>
+          <td><a href = '/account/order?id={{l.pk}}&state=u' >  +  </a> 
+            {{l.order}}<a href = '/account/order?id={{l.pk}}&state=d'>  -  </a> </td>
+
+          
+  
+    
+        </tr>
+    
+          {% endfor %}
+    
+    
+      </table>
+    
+      <a href="/account/pagecreate "> صفحه جدید  </a>
+      <br>
+      <a href="/account/rolelist ">  مدیریت نقشها </a>
+
+      
+{% endblock %}
+
+
+  
+     
+
+    
+

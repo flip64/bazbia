@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+
+  {% block titel %} لیست محصولات    {% endblock %}
+
+  {% block metetitel%}  {% endblock %}
+  {% block header %}  
+  {% include  "shop/header/header.html" %}
+ 
+ {% endblock%}  
+
+  {% block content %}   
+
+
+ <!-- Categories Start -->
+ <div class="container-fluid pt-5">
+    <div class="text-center mb-4">
+        <h2 class="section-title px-5"><span class="px-2"> دسته بندی</span></h2>
+    </div>
+    <div class="row px-xl-5 pb-3">
+        {% for l in listDasteh %}
+
+        <div class="col-lg-4 col-md-6 pb-1">
+            <div class="cat-item d-flex flex-column border mb-4" style="padding: 30px;">
+                <p class="text-right">{{l.tedad}}</p>
+                <a href="{% url 'list_product' %}?daste={{l.dasteh.name}}" class="cat-img position-relative overflow-hidden mb-3">
+                    <img class="img-fluid" src="{{l.dasteh.picture.url}}" alt="">
+                </a>
+                <h5 class="font-weight-semi-bold m-0">{{l.dasteh.name}} </h5>
+            </div>
+        </div>
+        
+    {% endfor %}     
+    </div>
+</div>
+<!-- Categories End -->
+
+
+
+<!-- Products Start -->
+{% include "shop/products.html"%}
+<!-- Products End -->
+
+
+
+<!-- Subscribe Start -->
+<div class="container-fluid bg-secondary my-5">
+    <div class="row justify-content-md-center py-5 px-xl-5">
+        <div class="col-md-6 col-12 py-5">
+            <div class="text-center mb-2 pb-2">
+                <h2 class="section-title px-5 mb-3"><span class="bg-secondary px-2"> بروز بیمانید</span></h2>
+                <p>Amet lorem at rebum amet dolores. Elitr lorem dolor sed amet diam labore at justo ipsum eirmod duo labore labore.</p>
+            </div>
+            <form action="">
+                <div class="input-group">
+                    <input type="text" class="form-control border-white p-4" placeholder="Email Goes Here">
+                    <div class="input-group-append">
+                        <button class="btn btn-primary px-4">Subscribe</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Subscribe End -->
+
+
+
+
+<!-- Vendor Start -->
+<div class="container-fluid py-5">
+    <div class="row px-xl-5">
+        <div class="col">
+            <div class="owl-carousel vendor-carousel">
+                <div class="vendor-item border p-4">
+                    <img src="static/img/vendor-1.jpg" alt="">
+                </div>
+                <div class="vendor-item border p-4">
+                    <img src="static/img/vendor-2.jpg" alt="">
+                </div>
+                <div class="vendor-item border p-4">
+                    <img src="static/img/vendor-3.jpg" alt="">
+                </div>
+                <div class="vendor-item border p-4">
+                    <img src="static/img/vendor-4.jpg" alt="">
+                </div>
+                <div class="vendor-item border p-4">
+                    <img src="static/img/vendor-5.jpg" alt="">
+                </div>
+                <div class="vendor-item border p-4">
+                    <img src="static/img/vendor-6.jpg" alt="">
+                </div>
+                <div class="vendor-item border p-4">
+                    <img src="static/img/vendor-7.jpg" alt="">
+                </div>
+                <div class="vendor-item border p-4">
+                    <img src="static/img/vendor-8.jpg" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Vendor End -->
+
+  {% endblock %}
+
+
+  
+  {% block footer %} 
+      {% include "footers/mainfooter.html" %}
+  {% endblock footer %} 
+    

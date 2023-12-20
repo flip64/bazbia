@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+  {% block titel %} آپدیت وام   {% endblock %}
+
+  
+  {% block content %}   
+  <p></p>
+ <div class="container" >  
+<form action="" method="post">  
+   <div class="mb-3">
+    
+    {% csrf_token %}
+
+    {{ form.as_p }}   
+   <input type="submit" value="OK">
+
+   </div>
+</form>
+</div>
+
+  {% endblock %}

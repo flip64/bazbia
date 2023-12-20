@@ -1,0 +1,27 @@
+    
+   <script>
+      function numberWithCommas(x) {
+         return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+     }
+
+
+
+
+      let subtotal = document.getElementById("subtotal").innerHTML;
+      let shipping = document.getElementById("shipping").innerHTML;
+      let takhfif = document.getElementById("takhfif").innerHTML;
+
+
+      subtotal = subtotal.replace(/,/g , '')
+      shipping = shipping.replace(/,/g , '')
+      takhfif = takhfif.replace(/,/g , '')
+      
+      let jam = parseInt(subtotal) + parseInt(shipping) - parseInt(takhfif) + ''
+      jam = numberWithCommas(jam)
+      consol.log("jam")
+      document.getElementById("jam").innerHTML =  jam 
+
+
+
+
+   </script>

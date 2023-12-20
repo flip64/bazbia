@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+  {% block titel %} لیست اعضا  {% endblock %}
+
+  
+  {% block content %}   
+
+    <div class="container">
+      <P>  لیست صفحات قابل دسترس </P>
+      
+        <ul class="list-group">
+        {% for l in listAccessPage  %}
+       
+        <li class="list-group-item"><a href = '/account/removeaccess?pageid={{l.pk}}&roleid={{role.pk}}'>{{l.name}}</a></li>
+      
+        {% endfor %}
+      </ul>
+    <br>
+     
+     <P>  لیست صفحات  غیر  قابل دسترس </P>
+      <ul class="list-group">
+        {% for l in listNotAccessPage  %}
+       
+        <li class="list-group-item"><a href = '/account/addacess?pageid={{l.pk}}&roleid={{role.pk}}'>{{l.name}}</a></li>
+      
+        {% endfor %}
+      </ul>
+
+
+  </div>
+
+ 
+  
+     <a href= "/" > بازگشت به خانه </a>
+
+
+ 
+
+  </div>
+
+ {%endblock%}
+

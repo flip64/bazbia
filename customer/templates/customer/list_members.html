@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% load humanize %}
+
+
+{% block titel %} 
+  لیست اعضا  
+{% endblock %}
+
+{% block metetitel%} 
+{% endblock %}
+{% block header %}
+
+    {% include "customer/header.html" %}
+
+{% endblock%}  
+
+
+{% block content %}   
+
+           <!-- Section -->
+           <div class=container>
+           <div class="section section-lg pt-0">
+            <div class="container">
+                <div class="row">
+                  {% for li in listmember %}
+                    <div class="col-md-6 col-lg-4 mb-5 ">
+                        <!-- Pricing Card -->
+                        <div class="card bg-secondary shadow-inset border-dark p-4">
+                            <!-- Header -->
+                            <header class="card-header shadow-lg text-center border border-dark rounded mb-4">
+                              {{li.user.first_name}} {{li.user.last_name}}                                
+                            </header>
+                            <!-- End Header -->
+                            <!-- Content -->
+                            <div class="card-body shadow-soft bg-primary text-center border border-dark  rounded-circle">
+                                <ul class="list-group mb-4 " >
+                                    <li class="list-group-item bg-secondary border-dark"><strong>  کاربر </strong><br> {{li.level.name}} </li>
+                                    <li class="list-group-item bg-secondary border-dark"><strong>  سقف میزان اعتبار</strong><br> {{li.level.maxMablagh|intcomma}} تومان</li>
+                                    <li class="list-group-item bg-secondary border-dark"><strong>   میزان اعتبار باقی مانده</strong><br> {{li.etebar|intcomma}} تومان</li>
+
+                                  </ul>
+                                <button type="button"  class="btn btn-secondary border border-dark shadow-sm btn-block text-dark" tabindex="0"> <a class="/modir/loan?id={{li.member.pk}}"><span class="text-dark">لیست وامها</span></a></button>
+ 
+                            </div>
+                            <!-- End Content -->
+                        </div>
+                        <!-- End of Pricing Card -->
+                    </div>
+                  {%endfor%}
+                </div>
+            </div>
+        </div>
+        <!-- End of Section -->
+        </section>
+      </div>
+
+     
+{% endblock %}

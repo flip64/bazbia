@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+
+{% load humanize %}
+{% block titel %}  سبد خرید    {%  endblock%}
+
+{% block header %}   
+
+   {% include "customer/header.html" %}
+ 
+{% endblock%}  
+
+
+{% block content %} 
+ 
+
+    <!-- Page Header Start -->
+    <div class="container-fluid bg-secondary mb-5">
+        <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
+            <h1 class="font-weight-semi-bold text-uppercase mb-3"> سبد خرید </h1>
+            <div class="d-inline-flex">
+                <p class="m-0"><a href="">Home</a></p>
+                <p class="m-0 px-2">-</p>
+                <p class="m-0"> سبد خرید</p>
+            </div>
+        </div>
+    </div>
+    <!-- Page Header End -->
+
+
+    <!-- Cart Start -->
+    <div class="container-fluid pt-5">
+        <div class="row px-xl-5">
+            <div class="col-lg-8 table-responsive mb-5">
+                <table class="table table-bordered text-center mb-0">
+                    <thead class="bg-secondary text-dark">
+                        <tr>
+                            <th>نام محصول </th>
+                            <th>قیمت</th>
+                            <th>تعداد</th>
+                            <th>مجموع</th>
+                            <th>حذف</th>
+                        </tr>
+                    </thead>
+                    <tbody class="align-middle">
+                        {% for l in listprudoct %}                        
+                        <tr>
+                            <td class="align-middle"><img src="{{l.product.picture.url}}" alt="" style="width: 50px;"> {{l.product.name}}</td>
+                            <td class="align-middle">{{l.product.takhfif|intcomma}} <span>تومان</span></td>
+                            <td class="align-middle">
+                                <div class="input-group quantity mx-auto" style="width: 100px;">
+                                    <div class="input-group-btn">
+                                        <a  href = " {% url 'removeSabad'%}?id={{l.product.pk}}" class="btn btn-sm btn-primary" >
+                                        <i class="fa fa-minus"></i>
+                                        </a>
+                                    </div>
+                                    <input type="text" class="form-control form-control-sm bg-secondary text-center" value="{{l.tedad}}">
+                                    <div class="input-group-btn">
+                                        <a href = "{% url 'addSabad' %}?id= {{l.product.pk}}" class="btn btn-sm btn-primary btn-plus">
+                                            <i class="fa fa-plus"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="align-middle">{{l.jame}}</td>
+                            <td class="align-middle"><button class="btn btn-sm btn-primary"><i class="fa fa-times"></i></button></td>
+                        </tr>
+                        {% endfor %}
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-lg-4">
+             {% if takhfif == 0  %}
+                  <form class="mb-5" action="{% url 'codeTakhfif' %}" method="POST">
+                    {% csrf_token %}
+                    <div class="input-group">
+                        <input type="text" name = 'code' class="form-control p-4" placeholder="کد تخفیف">
+                        <div class="input-group-append">
+                         <button type = 'submit'  value = ' اعمال کد تخفیف' class="btn btn-primary">کد تخفیف را اعمال کنید    </button>                
+                        </div>
+                      </form>
+                    </div>
+                </form>
+
+             {% else %}
+             <a href = "{% url 'deletTakhfif' %}"> 
+              <button type = 'submit'  value = ' اعمال کد تخفیف' class="btn btn-primary">  کد تخفیف اعمال شده را حذف کنید    </button>                
+             {% endif %}   
+                
+                <div class="card border-secondary mb-5">
+                    <div class="card-header bg-secondary border-0">
+                        <h4 class="font-weight-semi-bold m-0"> جمع سبد </h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between mb-3 pt-1">
+                            <h6  class="font-weight-medium"> جمع مبلغ</h6>
+                            <h6  class="font-weight-medium"> <span> تومان </span><span id="subtotal"> {{alljame|intcomma}}   </span> </h6>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <h6  class="font-weight-medium"> تخفیف  </h6>
+                            <h6  class="font-weight-medium"> <span> تومان </span> <span id="takhfif" >{{takhfif|intcomma}} </span></h6>
+                        </div>
+                            
+
+                        <div class="d-flex justify-content-between">
+                            <h6  class="font-weight-medium">هزینه حمل و نقل</h6>
+                            <h6  class="font-weight-medium"> <span> تومان </span> <span id="shipping" >{{hamlonaghl|intcomma}} </span></h6>
+                        </div>
+
+                        
+                    </div>
+
+
+                    <div class="card-footer border-secondary bg-transparent">
+                        <div class="d-flex justify-content-between mt-2">
+                            <h5 class="font-weight-bold"> جمع کل </h5>
+                            <h5  id="jam" class="font-weight-bold">{{kol}}</h5>
+                        </div>
+                         <a href="{% url 'shopindex' %}">
+                            <button  class="btn btn-block btn-primary my-3 py-3">ادامه خرید</button>
+                         </a>
+                         <form action ="{% url 'pardakht' %}  " method = 'POST'>
+                            {% csrf_token %}
+                             <button name= 'mablagh' type = "submit" value = "{{kol}}" class="btn btn-block btn-primary my-3 py-3"> تکمیل خرید  </button>
+                         </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Cart End -->
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
+
+  
+{% endblock %} 
+
+
+{% block footer%}   
+   {% include  "customer/footer.html" %}
+{% endblock%}  
+0

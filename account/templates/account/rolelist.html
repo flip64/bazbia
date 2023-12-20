@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+ 
+
+{% block titel %} لیست نقشها    {% endblock %}
+
+  
+{% block content %}   
+    
+      <h3>  مدیریت  نقشها </h3>
+      <table class="table table-success table-striped" >   
+        <tr>
+            <th> نام </th>
+            <th>    نام انگلیسی    </th>
+             <th>  توضیحات </th>
+    
+          </tr>
+          <tr>
+           {% for l in list %}
+           <td><a href="/account/accessList?id={{l.pk}}"> {{l.name}} </a> </td>
+            <td> {{l.Ename}} </td>
+            <td> {{l.dis}} </td>            
+  
+            
+    
+      
+          </tr>
+      
+            {% endfor %}
+      
+      
+        </table>
+      
+{% endblock %}
+
+
+  
+     
+
+    
+

@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+
+{% load humanize %} 
+
+
+{% block titel %} پرداخت اقساطی {%endblock %} 
+
+
+{% block metetitel%} {% endblock %}  
+
+
+{% block header %} {% include "customer/header.html" %} {% endblock%} 
+
+
+
+{% block content %}
+<div class="container text-center">
+  <div class="row text-center">
+    <div
+      class="bg-secondary border border-dark border-top-0 rounded-circle p-2 mt-3 text-center">
+     
+       <h1>پرداخت کنید</h1>
+       <h1>{{mablagh}}</h1>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-2">
+      <form
+        class="form-group"
+        action="{% url 'taidePardakhtNaghdi' %}?mablagh={{mablagh}}"
+        method="post"
+      >
+      {% csrf_token %}
+        <button name = "state" value= 'ok' class="btn btn-primary rounded-circle" type="submit">ok</button>
+        <button name = "state" value= 'cansel' class="btn btn-primary rounded-circle" type="submit">cansel</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %} {% block footer %} {% endblock %}

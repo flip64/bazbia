@@ -1,0 +1,81 @@
+{% extends "base.html"  %}  
+{% load humanize %}
+{% block title  %} پرداخت کاربر {% endblock %}
+
+{% block   header %}
+  <style>
+     .flex-container {
+       display: flex;
+       background-color: DodgerBlue;
+
+       }
+    
+     .flex-container > div {
+      background-color: #f1f1f1;
+      margin: 10px;
+      padding: 20px;
+      font-size: 30px;
+    }
+ </style>
+  
+     
+ <div class="flex-container">
+   <div class =>{{ member}}</div> 
+ </div>
+  
+
+{% endblock  %}
+
+
+
+{% block  content  %}
+ 
+
+  <div class="col-lg-8 table-responsive mb-5">
+    <table class="table table-bordered text-center mb-0">
+        <thead class="bg-secondary text-dark">
+            <tr>
+                <th>نام محصول </th>
+                <th>قیمت</th>
+                <th>تعداد</th>
+                <th>مجموع</th>
+        </thead>
+        <tbody class="align-middle">
+            {% for l in listproduc %}                        
+            <tr>
+                <td class="align-middle"> {{l.product.name}}</td>
+                <td class="align-middle">{{l.product.price|intcomma}} <span>تومان</span></td>
+                <td class="align-middle">
+                    <div class="input-group quantity mx-auto" style="width: 100px;">                       
+                        <input type="text" class="form-control form-control-sm bg-secondary text-center" value="{{l.tedad}}">
+                    </div>
+                </td>
+                <td class="align-middle">{{l.jame}}<span> تومان </span></td>
+            </tr>
+          
+            {% endfor %}
+
+            <tr>  
+              <td>  تومان   {{kol}}   <td>
+              <td> جمع کل با تخفیف و هزینه حمل و نقل    <td>
+
+              </tr> 
+
+
+          </tbody>
+    </table>    
+</div>
+<a href = '{% url "pardakht_etbari" %}?mablagh={{kol}}' > 
+ <button name= 'mablagh' type = "submit" value = "{{kol}}" class="btn btn-block btn-primary my-3 py-3">  پرداخت اعتباری    </button>
+</a>
+<form action ="{% url 'pardakht_naghdi' %}  " method = 'POST'>
+  {% csrf_token %}
+   <button name= 'mablagh' type = "submit" value = "{{kol}}" class="btn btn-block btn-primary my-3 py-3"> پرداخت نقدی    </button>
+</form>
+
+
+{% endblock %}
+
+{% block footer %}
+  {% include "customer/footer.html" %}
+{% endblock  %}
