@@ -43,7 +43,6 @@ INSTALLED_APPS = [
     'shop',
     'mptt',
     'account' , 
-    'zarinpal'
   
 ]
 
