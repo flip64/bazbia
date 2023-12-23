@@ -84,33 +84,32 @@
         id="navbar-vertical"
       >
         <div class="navbar-nav w-100 overflow-hidden" style="height: 410px">
-          {% for cat in catlist %}
-
-          <div class="nav-item dropdown">
-            <a href="#" class="nav-link" data-toggle="dropdown"
-              >{{cat.name}} <i class="fa fa-angle-down float-right mt-1"></i
-            ></a>
-            <div
-              class="dropdown-menu position-absolute bg-secondary border-0 rounded-0 w-100 m-0"
-            >
-              {% for l1 in listL1 %} {% if l1.category.name == cat.name %}
+          {% for cat in catlist %}     <!--  لایه اول دسته محصولات -->
+            <!-- check if category is parent -->
+            {% if  not cat.is_sub %}     
+             <!-- parent--> 
               <div class="nav-item dropdown">
-                <a href="#" class="nav-link" data-toggle="dropdown"
-                  >{{l1.name}} <i class="fa fa-angle-down float-right mt-1"></i
-                ></a>
-                <div
-                  class="dropdown-menu position-absolute bg-secondary border-0 rounded-0 w-100 m-0"
-                >
-                  {% for l2 in listL2 %} {% if l2.catel1.name == l1.name %}
-                  <a href="" class="nav-item nav-link">l2.name</a>
-                  {% endif %} {% endfor %}
-                </div>
-              </div>
-              {% endif %} {% endfor %}
-            </div>
-          </div>
+               <a href="#" class="nav-link" data-toggle="dropdown">
+                {{cat.name}} <i class="fa fa-angle-down float-right mt-1"></i>
+               </a>
+               <div class="dropdown-menu position-absolute bg-secondary border-0 rounded-0 w-100 m-0">
+                {% for cat_1 in  cat.sub_categories.all %}      <!--  لایه دوم دسته محصولات -->
+                   <a href="#" class="nav-link" data-toggle="dropdown">
+                   {{cat_1.name}} <i class="fa fa-angle-down float-right mt-1"></i>
+                   </a>
+                   <div class="dropdown-menu position-absolute bg-secondary border-0 rounded-0 w-100 m-0">
+                   {% for cat_2 in cat_1.sub_categories.all%}    <!--  لایه سوم دسته محصولات -->
+                    <a href="" class="nav-item nav-link">{{cat_2.name}}</a>
+                   {% endfor %} 
+                  </div> 
+                {% endfor %} 
+                
+               </div>
+              </div> 
+            {% endif %}
 
           {% endfor %}
+ 
         </div>
       </nav>
     </div>

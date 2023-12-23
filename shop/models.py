@@ -5,9 +5,18 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 
 class Category(models.Model) : 
    name =   models.CharField(max_length=50)
+   sub_category = models.ForeignKey(
+        'self', on_delete=models.CASCADE,
+        related_name='sub_categories', null=True, blank=True
+    )
+   is_sub = models.BooleanField(default=False)    # اگر درست بودن زیر مجموع دارد
+
 
    def __str__(self):
        return self.name    
+
+
+
 
 class CateL1(models.Model):
    name = models.CharField(max_length=50)
