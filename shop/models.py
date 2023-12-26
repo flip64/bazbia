@@ -15,9 +15,6 @@ class Category(models.Model) :
    def __str__(self):
        return self.name    
 
-
-
-
 class CateL1(models.Model):
    name = models.CharField(max_length=50)
    category = models.ForeignKey(Category,  on_delete=models.CASCADE)
@@ -39,6 +36,7 @@ class Product(models.Model):
     takhfif = models.BigIntegerField(default=0)
     picture = models.ImageField(upload_to='upload/product')
     category = models.ForeignKey("CateL2", on_delete=models.CASCADE , null=True) 
+    slug = models.SlugField(unique = True)
     
     def __str__(self):
         return self.name

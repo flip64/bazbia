@@ -44,13 +44,13 @@
             {% for l in listproduc %}                        
             <tr>
                 <td class="align-middle"> {{l.product.name}}</td>
-                <td class="align-middle">{{l.product.price|intcomma}} <span>تومان</span></td>
+                <td class="align-middle">{{l.price|intcomma}} <span>تومان</span></td>
                 <td class="align-middle">
                     <div class="input-group quantity mx-auto" style="width: 100px;">                       
-                        <input type="text" class="form-control form-control-sm bg-secondary text-center" value="{{l.tedad}}">
+                        <input type="text" class="form-control form-control-sm bg-secondary text-center" value="{{l.quantity}}">
                     </div>
                 </td>
-                <td class="align-middle">{{l.jame}}<span> تومان </span></td>
+                <td class="align-middle">{{l.total_price}}<span> تومان </span></td>
             </tr>
           
             {% endfor %}
@@ -64,17 +64,18 @@
 
           </tbody>
     </table>    
-</div>
-<a href = '{% url "pardakht_etbari" %}?mablagh={{kol}}' > 
+  </div>
+ <a href = '{% url "pardakht_etbari" %}?mablagh={{kol}}' > 
  <button name= 'mablagh' type = "submit" value = "{{kol}}" class="btn btn-block btn-primary my-3 py-3">  پرداخت اعتباری    </button>
-</a>
-<form action ="{% url 'pardakht_naghdi' %}  " method = 'POST'>
+ </a>
+ <form action ="{% url 'pardakht_naghdi' %}  " method = 'POST'>
   {% csrf_token %}
    <button name= 'mablagh' type = "submit" value = "{{kol}}" class="btn btn-block btn-primary my-3 py-3"> پرداخت نقدی    </button>
-</form>
+ </form>
 
 
 {% endblock %}
+
 
 {% block footer %}
   {% include "customer/footer.html" %}

@@ -3,14 +3,15 @@ from django.shortcuts import redirect
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect ,HttpResponse
 from jalali_date import jdatetime
-from shop.models import Product,exeleFile
+from shop.models import Product
 from customer.models import Member ,ProductFaktor , Faktor ,ListState , Takhfif, Aqhsat,DafterAqhsat
 from datetime import datetime
 from account.views import accesspage
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from config.config import *
 from config.baseClass import *
-
+from cart.utils.cart import Cart 
 
 
 
@@ -208,103 +209,54 @@ def listsabad(request) :
   
   
   
-
-def pardakht(request) : 
+@login_required
+def order(request) : 
    
-   class productFacorCalss: 
-     def __init__(self, product , tedad , jame ): 
-       self.product = product
-       self.tedad = tedad 
-       self.jame = jame  
-       
-   
-   
+   cart = Cart(request)   
    curentmember = request.user.member           ## عضوی که لاگین کرده 
-   state = ListState.objects.get(englishName = 'sabad')        # فاکتور در حالت سبد خرید 
-    
-    
-    # فاکتور های کاربر که وضعیت آن در حالت سبد خرید باشد را بر میگردانیم         
-   try :  
-      faktor = Faktor.objects.get(member = curentmember, state = state)
-   except:    
-      messages.add_message(request ,messages.ERROR , "  سبد خالی  است " )
-      redirect(request , "listSaba")
+   try: 
+    takhfif = Takhfif.objects.get(code = request.session['takhfif'])
+   except:
+    takhfif = None 
 
-   listpruductFaktor = ProductFaktor.objects.filter(faktor=faktor)
-   listproduct =  [] 
-   for l in listpruductFaktor :
-      tedad = l.tedad
-      jame = l.tedad * l.product.price       
-      s =productFacorCalss(l.product,tedad,jame)
-      listproduct.append(s) 
 
+   
+   state = ListState.objects.get(englishName = 'order')        # فاکتور در حالت  سفارش 
+
+   faktor = Faktor.objects.filter(member = curentmember, state = state)
+   if len(faktor) != 0 : 
+    messages.add_message(request ,messages.ERROR , "  کاربر سفارش فعال دارد  حذف شد   " )
+    faktor.delete()
+    return redirect ('cart:show_cart')
+   else : 
+     faktor = Faktor.objects.create(
+       member = curentmember,
+       state = state,
+       sum = cart.get_total_price(),
+       pardakht = 0 ,
+       takhfif =takhfif 
+     ) 
+
+   faktor = Faktor.objects.get(member = curentmember, state = state)
+
+   for item in cart: 
+     ProductFaktor.objects.create(
+       product= item['product'],
+       faktor = faktor , 
+       tedad = item['quantity'],
+
+     )
+  
    
    kol = request.POST['mablagh']
       
 
    context = {
     'member' : curentmember,
-    'listproduc' : listproduct ,
+    'listproduc' : cart ,
     'kol'  : kol
    } 
    return  render(request , 'customer/pardakht.html' , context)
-
-# بررسی کد تخفیف 
-def codeTakhfif(request): 
-    
-   code = request.POST['code']
-   try:  
-         takhfif =  Takhfif.objects.get(code = code) 
-         if(takhfif) : 
-          member  = request.user.member
-          try:  
-           state = ListState.objects.get(englishName = 'sabad') 
-          except : 
-           messages.add_message(request, messages.INFO, " وضعیت سبد موجود نیست  ")
-
-          try : 
-           faktor = Faktor.objects.get(member=member , state = state)
-          except : 
-           print ("fakto mojod nist ")
-           messages.add_message(request, messages.INFO, " سبد خرید موجود نیست     ")
-        
-          faktor.takhfif = takhfif
-          faktor.save()
-          messages.add_message(request, messages.INFO,  "  کد تخفیف  " + takhfif.name +  "  اعمال شد     "  , extra_tags= 'success')
-         else : 
-              messages.add_message(request, messages.INFO, " کد تخیف موجود نیست  " , extra_tags='warning')
-   except: 
-     messages.add_message(request, messages.INFO, " کد تخیف موجود نیست  " , extra_tags='warning') 
-
-
-
-
-
-   return redirect('/customer/sabad?id='+str(request.user.member.pk))   
-
-
-def deletTakhfif(request): 
-   try: 
-        member  = request.user.member
-        try:  
-          state = ListState.objects.get(englishName = 'sabad') 
-        except : 
-           print ( 'وضعیت سبد موجود نیست ')   
-        try : 
-         faktor = Faktor.objects.get(member=member , state = state)
-        except : 
-           print ("fakto mojod nist ")
-        
-        faktor.takhfif = None
-        faktor.save()
-        messages.add_message(request, messages.INFO, " کد تخفیف حذف شد     " , extra_tags='danger')
-
-
-   except: 
-    messages.add_message(request, messages.INFO, " کد موجود نیست  " , extra_tags= 'warning')
-
- 
-   return redirect('/customer/sabad?id='+str(request.user.member.pk))   
 
 
 def pardakht_naghdi(request): 
@@ -396,18 +348,14 @@ def pardakht_etbari(request):
  try:
   if request.method == 'POST':
    if request.POST['taid'] == 'ok':
-    print(request.POST)
     return HttpResponseRedirect('/customer/taidePardakhtEtebari/?pardakhti='+ str(mablaghPardakhti)+ "&aghsat=" + str(mablaghAgsat) )
  except :
    messages.add_message(request, messages.INFO, "   بزای پرداخت اعتباری لطفا تیک تایید را بزنید      ")
    return HttpResponseRedirect('/customer/pardakht_etbari/?mablagh='+ str(mablagh))
     
  
-
-   
 #             تایید پرداخت نقدی
 def taidePardakhtNaghdi(request): 
- print(request.method) 
  if request.method == "POST" : 
     '''
       شرایط اضافه کردن به اعتبار کاربر 
@@ -426,6 +374,18 @@ def taidePardakhtNaghdi(request):
        if member.etebar > member.level.maxMablagh:
         member.etebar = member.level.maxMablagh
        member.save()
+
+      ### تغیر حالت فاکتور از سفارش به حالت پرداخت شده  
+      stateorder = ListState.objects.get(englishName = 'order')
+      faktor = Faktor.objects.get(member = member , state = stateorder)
+      statepardakht = ListState.objects.get(englishName = 'payed')
+      faktor.state=statepardakht 
+      faktor.save()
+
+      ### خالی کردن سبد خرید 
+      cart = Cart(request) 
+      cart.clear()
+
       state = 'پرداخت شد '
     else: 
      state = 'پرداخت نشد' 
@@ -445,7 +405,7 @@ def taidePardakhtEtebari(request):
      member = request.user.member 
 
      # ایجاد دفترچه اقساط 
-     stateSabad = ListState.objects.get(englishName = 'sabad')
+     stateSabad = ListState.objects.get(englishName = 'order')
      faktor = Faktor.objects.get(member=member , state = stateSabad)
      tAghsat = tedadAghsat(mablaghaghsat)
      daftaraghsat = DafterAqhsat.objects.create(
@@ -466,8 +426,17 @@ def taidePardakhtEtebari(request):
      messages.add_message(request ,messages.INFO,"دفترچه اقساط ایجاد شد " , )
      member.etebar = member.etebar - mablaghaghsat   
      member.save()
+        
+     ## تغیر وضعیت فاکتور به حالت در حال پرداخت 
+     state_darhal_pardakht = ListState.objects.get(englishName = 'paying')
+     faktor.state = state_darhal_pardakht  
+     
+     cart = Cart(request)
+     cart.clear()
+
      if mablaghpardakhti != 0 :
-      return HttpResponseRedirect('/customer/pardakht_naghdi/?mablagh='+ str(mablaghpardakhti))
+        return HttpResponse('    پرداخت شد  ') 
+
      else :
       return HttpResponse('تمام مبلغ قسط بندی شد ') 
    

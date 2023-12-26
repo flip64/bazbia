@@ -55,7 +55,7 @@
         <span class="badge">0</span>
       </a>
       <a
-        href="{% url 'listSabad' %}?id={{request.user.member.pk}}"
+        href="{% url 'cart:show_cart' %}?id={{request.user.member.pk}}"
         class="btn border"
       >
         <i class="fas fa-shopping-cart text-primary"></i>
@@ -151,7 +151,7 @@
               >
               <div class="dropdown-menu rounded-0 m-0">
                 <a
-                  href="{% url 'listSabad' %}?id={{request.user.member.pk}}"
+                  href="{% url 'cart:show_cart' %}"
                   class="dropdown-item"
                 >
                   سبد خرید</a

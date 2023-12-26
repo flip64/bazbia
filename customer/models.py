@@ -88,7 +88,6 @@ class Faktor(models.Model):
   
 
 
-
 #  دفتر اقساط مربوط به فاکتور   
 class DafterAqhsat(models.Model):
     faktor = models.ForeignKey(Faktor , on_delete=models.CASCADE , null=True ,blank= True)
