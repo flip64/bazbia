@@ -84,7 +84,7 @@ class Aqhsat(models.Model):
         return 'qhest no ' + str(self.namber) + ' ' + self.aghsat.__str__()
 
 
-###  لیست محصولات فاکتور 
+###  لیست محصولات داخل فاکتور 
 class ProductFaktor(models.Model): 
     product = models.ForeignKey(Product, on_delete=models.CASCADE , null= True , blank=True)
     faktor = models.ForeignKey(Faktor , on_delete= models.CASCADE , null = True , blank=True)        
