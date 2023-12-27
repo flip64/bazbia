@@ -3,7 +3,7 @@ from shop.models import Category,Slide,Daste,Collection,Product,DasteProduct
 from customer.models  import Faktor, ProductFaktor , ListState
 from account.views import accesspage
 from config.baseClass import DasteBytedad , productByData 
-
+from cart.utils.cart import Cart
 
 def list_product(request):
  
@@ -38,20 +38,10 @@ def list_product(request):
      nameDasteh = 'جدید ترین محصولات'
     
     
-#######  شمارش تعداد محصولات داخل سبد خرید   
-  try : 
-    member = request.user.member
-    state = ListState.objects.get(englishName = 'sabad')
-    faktor = Faktor.objects.get(member = member , state =state)
-    listPrudoctSabad = ProductFaktor.objects.filter(faktor = faktor)
-    tedadSaba = len(listPrudoctSabad)
-  except : 
-    tedadSaba =  0
-    pass   
-
-
-
-
+#######  شمارش تعداد محصولات داخل سبد خرید 
+  cart = Cart(request)     
+  tedadSaba =  len(cart.cart)
+  
   context= {
         'catlist'      : catlist,
         'listslid'     : list_slide,

@@ -20,6 +20,12 @@ def add_to_cart(request, product_id):
 
 def show_cart(request):
     cart = Cart(request)
+
+    # چک کردن سبد خرید   
+    if len(cart.cart) == 0 :
+      messages.add_message(request, messages.INFO, "  سبد خرید خالی است   " , extra_tags="danger")
+      return redirect ("/shop")
+  
     hamlonaghl = 50000 
     codetakhfif = request.session.get("takhfif")
     try :
