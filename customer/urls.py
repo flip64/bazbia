@@ -3,9 +3,6 @@ from customer import views
 urlpatterns = [
     path('', views.listMember ,name='listmember'),
     path('profile/', views.profile , name= 'profile'),
-    path('addsabad/' , views.addsabad,name='addSabad'),
-    path('removeSabad/' , views.removeSabad,name='removeSabad'),
-    path('sabad/', views.listsabad, name="listSabad"),
     path('pardakht/' , views.order, name = 'pardakht'),
     path('pardakht_naghdi/',views.pardakht_naghdi , name='pardakht_naghdi'),
     path('pardakht_etbari/',views.pardakht_etbari , name='pardakht_etbari'),

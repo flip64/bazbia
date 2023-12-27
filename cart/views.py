@@ -9,7 +9,6 @@ from .forms import QuantityForm
 from shop.models import Product
 
 
-@login_required
 def add_to_cart(request, product_id):
     
     ###  اضافه کردن یک محصول به داخل سبد خرید 
