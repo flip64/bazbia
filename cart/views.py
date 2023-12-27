@@ -11,12 +11,17 @@ from shop.models import Product
 
 @login_required
 def add_to_cart(request, product_id):
+    
+    ###  اضافه کردن یک محصول به داخل سبد خرید 
+
     cart = Cart(request)
-    product = get_object_or_404(Product, id=product_id)
-    cart.add(product=product, quantity=1)
+    product = get_object_or_404(Product, id=product_id)   #  محصولی که می خواهیم به سبد خرید اضافه کنیم
+    cart.add(product=product, quantity=1)          
     messages.success(request, 'Added to your cart!', 'info')
     return redirect('cart:show_cart')
 
+
+     # to do لیست انبار باید چک شود 
 
 def show_cart(request):
     cart = Cart(request)
@@ -66,6 +71,9 @@ def show_cart(request):
 
 @login_required
 def remove_from_cart(request, product_id):
+    
+    ########## برای حذف یک محصول از داخل سبد خرید 
+
     cart = Cart(request)
     product = get_object_or_404(Product, id=product_id)
     cart.remove(product)
