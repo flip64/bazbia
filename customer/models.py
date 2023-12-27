@@ -50,31 +50,6 @@ class Takhfif(models.Model):
 
 
 
-class Sabad(models.Model):
-    member = models.ForeignKey(Member,  on_delete=models.CASCADE)
-    creatDate = jmodels.jDateTimeField(auto_now=True)
-    state =  models.ForeignKey(ListState, on_delete=models.DO_NOTHING , null=True , blank=True)
-    sum = models.BigIntegerField(default= 0)              ##  جمع کل فاکتور 
-    pardakht = models.BigIntegerField()          ##  پرداختی فاکتور
-    takhfif = models.IntegerField()               ## در صد تخفیف متعلق به فاکتور 
- 
-
-    def __str__(self):
-        return 'sabad' + self.member.user.first_name + self.member.user.last_name    
-
-class ProductSabad(models.Model) : 
-
-    product =models.ForeignKey(Product, on_delete=models.CASCADE)   
-    sabad = models.ForeignKey(Sabad, on_delete= models.CASCADE)
-    tedad = models.IntegerField(default=1)
-
-    def __str__(self):
-        return self.product.name + ' in ' +   self.sabad.__str__() 
-    
-
-
-
-
 ##  فاکتور
 class Faktor(models.Model): 
   member = models.ForeignKey(Member , on_delete=models.CASCADE , blank= True , null= True)
@@ -86,8 +61,6 @@ class Faktor(models.Model):
   def __str__(self):
       return self.member.__str__()      
   
-
-
 #  دفتر اقساط مربوط به فاکتور   
 class DafterAqhsat(models.Model):
     faktor = models.ForeignKey(Faktor , on_delete=models.CASCADE , null=True ,blank= True)
