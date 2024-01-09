@@ -1,5 +1,5 @@
 from django.contrib import admin
-from shop.models import Category,Product,Daste,DasteProduct,Moshabe,Slide,Collection
+from shop.models import Category,Product,Daste,Moshabe,Slide,Collection
 from customer.models import Level,Member,DafterAqhsat,Aqhsat,Takhfif,Faktor,ListState,ProductFaktor
 from account.models import PageCate,Page,AccessList,Role
 # Register your models here.
@@ -8,7 +8,6 @@ from account.models import PageCate,Page,AccessList,Role
 admin.site.register(Category)
 admin.site.register(Product)
 admin.site.register(Daste)
-admin.site.register(DasteProduct)
 admin.site.register(Moshabe)
 admin.site.register(Slide)
 admin.site.register(Collection)

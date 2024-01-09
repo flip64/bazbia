@@ -15,6 +15,15 @@ class Category(models.Model) :
    def __str__(self):
        return self.name    
 
+class Daste(models.Model):
+    name= models.CharField(max_length=50)
+    enghlishNmae = models.CharField(max_length=50 ,null=True, blank=True )
+    picture = models.ImageField(upload_to='upload/dasteh' ,default='upload/dasteh/defult.jpg')
+    type = models.CharField(max_length=50 ,null=True , blank=True)   
+    def __str__(self):
+        return self.name
+
+
 class Product(models.Model):
     name = models.CharField(max_length=40)
     description = models.CharField(max_length=500,default='',blank=True,null=True)
@@ -23,23 +32,12 @@ class Product(models.Model):
     picture = models.ImageField(upload_to='upload/product')
     category = models.ForeignKey("Category", on_delete=models.CASCADE , null=True) 
     slug = models.SlugField(unique = True)
+    dasteh = models.ManyToManyField(Daste, related_name='dasteh_name')
     
     def __str__(self):
         return self.name
 
-class Daste(models.Model):
-    name= models.CharField(max_length=50)
-    enghlishNmae = models.CharField(max_length=50 ,null=True, blank=True )
-    picture = models.ImageField(upload_to='upload/dasteh' ,default='upload/dasteh/defult.jpg')
-    type = models.CharField(max_length=50 ,null=True , blank=True)   
-    def __str__(self):
-        return self.name
    
-class DasteProduct(models.Model):
-    product = models.ForeignKey(Product , on_delete=models.DO_NOTHING , null=True)  
-    daste = models.ForeignKey(Daste,on_delete=models.DO_NOTHING)
-    def __str__(self):
-        return self.product.name + ' ' + self.daste.name  
 
 class Moshabe (models.Model) : 
      productOne = models.ForeignKey(Product , on_delete=models.DO_NOTHING ,related_name='poduct2product' , null=True) 

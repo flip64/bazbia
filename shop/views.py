@@ -1,5 +1,5 @@
 from django.shortcuts import render , redirect
-from shop.models import Category,Slide,Daste,Collection,Product,DasteProduct
+from shop.models import Category,Slide,Daste,Collection,Product
 from customer.models  import Faktor, ProductFaktor , ListState
 from account.views import accesspage
 from config.baseClass import DasteBytedad , productByData 
@@ -19,7 +19,7 @@ def list_product(request):
 ##############3 LIST DASTEH 
   listdastehbytedad = []   
   for l in list_dasteh:
-     ld = DasteBytedad(l,len(DasteProduct.objects.filter(daste = l)))
+     ld = DasteBytedad(l,len(Product.objects.filter(dasteh = l)))
      listdastehbytedad.append(ld)
 
 
@@ -28,11 +28,10 @@ def list_product(request):
 #####################3 LIST PRODUCT
   try:
    if (request.GET['daste']):
-     nameDasteh =request.GET['daste']
-     daste = Daste.objects.get(name=nameDasteh)
-     if daste:
-      list_product = DasteProduct.objects.filter(daste=daste)
-
+     dasteh = Daste.objects.get(enghlishNmae=request.GET['daste'])
+     if dasteh:
+      list_product = Product.objects.filter(dasteh = dasteh)
+      nameDasteh = dasteh.name
   except:    
      list_product = Product.objects.all() 
      nameDasteh = 'جدید ترین محصولات'
